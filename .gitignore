@@ -1,0 +1,27 @@
+# Java / Maven
+target/
+*.class
+*.jar
+*.war
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+
+# H2 Database files
+*.mv.db
+*.lock.db
+pos_db*
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Environment
+.env
+*.env
+
+# OS
+.DS_Store
+Thumbs.db

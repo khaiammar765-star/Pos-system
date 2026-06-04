@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir /s /b \"C:\\\\Users\\\\Cicakkobeng\\\\Desktop\\\\POS system\\\\\" | findstr \"pos_db\")",
+      "PowerShell(Get-ChildItem \"C:\\\\Program Files\" -Directory | Where-Object { $_.Name -match \"maven|mvn\" }; Get-ChildItem \"C:\\\\ProgramData\" -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -match \"maven\" }; Get-ChildItem \"C:\\\\Users\\\\User\" -Directory | Where-Object { $_.Name -match \"maven|mvn\" })",
+      "PowerShell(java -version 2>&1)",
+      "PowerShell($env:PATH = [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"User\"\\); node --version; npm --version)",
+      "Bash(where mvn *)",
+      "Bash(where java *)",
+      "Bash(\"/c/Program Files/JetBrains/IntelliJ IDEA 2026.1.2/plugins/maven/lib/maven3/bin/mvn\" -q compile)",
+      "Bash(java -version)",
+      "Bash(\"/c/Program Files/JetBrains/IntelliJ IDEA 2026.1.2/plugins/maven/lib/maven3/bin/mvn\" -q --version)",
+      "Read(//c/Program Files/Java/**)",
+      "Read(//c/Program Files/**)",
+      "Read(//c/Program Files/JetBrains/IntelliJ IDEA 2026.1.2/jbr/**)",
+      "Bash(find /c/Users/User -maxdepth 5 -type d -iname \"*temurin*21*\" 2>/dev/null | head; find /c/Users/User -maxdepth 6 -type f -path \"*jdk-21*/bin/javac.exe\" 2>/dev/null | head; find \"/c/Program Files\" \"/c/Program Files \\(x86\\)\" -maxdepth 3 -type f -path \"*21*/bin/javac.exe\" 2>/dev/null | head)",
+      "Bash(JAVA_HOME=\"/c/Users/User/.jdks/temurin-21.0.11\" \"/c/Program Files/JetBrains/IntelliJ IDEA 2026.1.2/plugins/maven/lib/maven3/bin/mvn\" -q clean compile)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(ls -la src/main/resources/templates/)",
+      "Bash(ls src/main/resources/static/js/)",
+      "Bash(grep -rl \"import org.springframework.stereotype.Controller;\" src/main/java --include=*.java)",
+      "Bash(ls src/main/java/com/pos/system/config/CategoryConverter.java)",
+      "Bash(grep -n \"thymeleaf\" pom.xml)",
+      "Bash(cd \"/c/Users/Cicakkobeng/Desktop/POS system\" && echo \"=== Who references CategoryConverter? ===\" && grep -rn \"CategoryConverter\" src/main/java --include=*.java 2>/dev/null | grep -v \"CategoryConverter.java:\" || echo \"Nothing references it\" && echo \"\" && echo \"=== Any @Controller class referenced by others? ===\" && grep -rn \"DashboardController\\\\|AuthController\\\\|ProductController\\\\b\" src/main/java --include=*.java 2>/dev/null | grep -v \"controller/ProductController.java\\\\|controller/AuthController.java\\\\|controller/DashboardController.java\" || echo \"Nothing references them\")",
+      "Bash(rm -rf src/main/resources/templates)",
+      "Bash(rm -f src/main/resources/static/js/pos.js)",
+      "Bash(rm -f src/main/java/com/pos/system/controller/AuthController.java src/main/java/com/pos/system/controller/CategoryController.java src/main/java/com/pos/system/controller/CustomerController.java src/main/java/com/pos/system/controller/DashboardController.java src/main/java/com/pos/system/controller/InventoryController.java src/main/java/com/pos/system/controller/ProductController.java src/main/java/com/pos/system/controller/ReportController.java src/main/java/com/pos/system/controller/SaleController.java src/main/java/com/pos/system/controller/UserController.java src/main/java/com/pos/system/config/CategoryConverter.java)",
+      "Bash(./mvnw -q compile)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(ls mvnw*)",
+      "Bash(ls *.cmd)"
+    ]
+  }
+}

@@ -1,0 +1,135 @@
+/* ============================================================
+   WARUNG ORANG LAMA — Retro old-school theme
+   One file themes the whole app. Colours & fonts live here as
+   CSS variables, so changing the look later = edit this file only.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+  --wol-paper: #f3e9d2;     /* aged paper / cream background */
+  --wol-surface: #fbf4e4;   /* lighter cream for cards        */
+  --wol-ink: #2b2118;       /* dark espresso "ink"            */
+  --wol-brick: #8b3a2f;     /* faded brick red accent         */
+  --wol-gold: #b8860b;      /* mustard / dark goldenrod       */
+  --wol-line: #2b2118;      /* borders                        */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'PT Serif', Georgia, serif;
+  background-color: var(--wol-paper);
+  color: var(--wol-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* ---- Headings & brand: condensed vintage signage font ---- */
+h1, h2, h3, h4, h5, h6,
+.navbar-brand,
+.btn {
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+/* ---- Page backgrounds ---- */
+.bg-light { background-color: var(--wol-paper) !important; }
+.min-vh-100.bg-light { background-color: var(--wol-paper) !important; }
+
+/* ---- Navbar: espresso bar with a mustard underline ---- */
+.navbar.bg-dark,
+.bg-dark {
+  background-color: var(--wol-ink) !important;
+}
+.navbar.bg-dark {
+  border-bottom: 4px solid var(--wol-gold);
+}
+.navbar-brand {
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--wol-paper) !important;
+}
+
+/* ---- Cards: cream paper with a hard retro shadow & sharp corners ---- */
+.card {
+  background-color: var(--wol-surface);
+  border: 2px solid var(--wol-line) !important;
+  border-radius: 0 !important;
+  box-shadow: 5px 5px 0 rgba(43, 33, 24, 0.18) !important;
+}
+.card-header {
+  background-color: var(--wol-surface) !important;
+  border-bottom: 2px solid var(--wol-line);
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ---- Buttons: boxy, stamped look ---- */
+.btn {
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  font-weight: 500;
+  border-width: 2px;
+}
+.btn-dark {
+  background-color: var(--wol-ink);
+  border-color: var(--wol-ink);
+}
+.btn-success {
+  background-color: var(--wol-gold);
+  border-color: var(--wol-gold);
+  color: var(--wol-ink);
+}
+.btn-success:hover {
+  background-color: #9c7209;
+  border-color: #9c7209;
+  color: #fff;
+}
+.btn-danger { background-color: var(--wol-brick); border-color: var(--wol-brick); }
+.btn-outline-dark { border-color: var(--wol-ink); color: var(--wol-ink); }
+
+/* ---- Inputs ---- */
+.form-control, .form-select {
+  border: 2px solid var(--wol-line);
+  border-radius: 0;
+  background-color: #fffdf7;
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--wol-gold);
+  box-shadow: 0 0 0 0.2rem rgba(184, 134, 11, 0.25);
+}
+
+/* ---- Tables ---- */
+.table-dark {
+  --bs-table-bg: var(--wol-ink);
+}
+thead.table-dark th {
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ---- Badges & alerts: sharp corners to match ---- */
+.badge { border-radius: 0; }
+.alert { border-radius: 0; border-width: 2px; }
+
+/* ---- Brand text colour helpers (use anywhere) ---- */
+.text-brick { color: var(--wol-brick) !important; }
+.text-gold { color: var(--wol-gold) !important; }
+
+/* ---- Logo on the login screen ---- */
+.wol-login-logo {
+  max-width: 100%;
+  height: auto;
+  border: 3px solid var(--wol-ink);
+}
