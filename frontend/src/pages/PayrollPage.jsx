@@ -166,7 +166,7 @@ export default function PayrollPage() {
         {/* ════════════════════ TAB 1: STAFF & RATE ════════════════════ */}
         {tab === 'staff' && (
           <div className="card shadow-sm border-0">
-            <div className="card-header bg-dark text-white">
+            <div className="card-header">
               <i className="bi bi-people me-2"></i>Staff & Daily Rate List
             </div>
             <div className="card-body p-0">
@@ -247,7 +247,7 @@ export default function PayrollPage() {
               <div className="text-center py-5"><div className="spinner-border text-secondary"></div></div>
             ) : (
               <div className="card shadow-sm border-0">
-                <div className="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <div className="card-header d-flex justify-content-between align-items-center">
                   <span>
                     <i className="bi bi-calendar3 me-2"></i>
                     Attendance — {staff.find(u => u.id == attStaff)?.fullName} — {monthName(attMonth)} {attYear}
@@ -300,7 +300,7 @@ export default function PayrollPage() {
             </div>
 
             <div className="card shadow-sm border-0">
-              <div className="card-header bg-dark text-white">
+              <div className="card-header">
                 <i className="bi bi-cash-stack me-2"></i>Payroll Payment History
               </div>
               <div className="card-body p-0">
