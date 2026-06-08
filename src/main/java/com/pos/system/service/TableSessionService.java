@@ -1,5 +1,6 @@
 package com.pos.system.service;
 
+import com.pos.system.exception.ResourceNotFoundException;
 import com.pos.system.model.Sale;
 import com.pos.system.model.SaleStatus;
 import com.pos.system.model.SessionStatus;
@@ -45,7 +46,7 @@ public class TableSessionService {
     @Transactional
     public TableSession closeSession(Long sessionId) {
         TableSession session = repo.findById(sessionId)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Session not found with id: " + sessionId));
         // Auto-complete any pending orders before closing
         for (Sale sale : session.getOrders()) {
             if (sale.getStatus() == SaleStatus.PENDING) {
@@ -59,7 +60,8 @@ public class TableSessionService {
     }
 
     public TableSession getById(Long id) {
-        return repo.findById(id).orElseThrow(() -> new RuntimeException("Session not found"));
+        return repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Session not found with id: " + id));
     }
 
     @Transactional(readOnly = true)

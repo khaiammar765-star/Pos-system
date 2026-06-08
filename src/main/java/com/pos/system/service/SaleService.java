@@ -41,6 +41,18 @@ public class SaleService {
 
     @Transactional
     public Sale processSale(SaleRequestDTO dto) {
+        // Guard: an order must have items, and every quantity must be positive.
+        // Without this, a negative quantity (e.g. from the public QR endpoint) would
+        // ADD stock instead of deducting and produce a negative total.
+        if (dto.getItems() == null || dto.getItems().isEmpty()) {
+            throw new IllegalStateException("Order has no items.");
+        }
+        for (SaleItemRequestDTO itemDto : dto.getItems()) {
+            if (itemDto.getQuantity() <= 0) {
+                throw new IllegalStateException("Quantity must be at least 1.");
+            }
+        }
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User cashier = (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal()))
                 ? userService.getUserByUsername(auth.getName())
