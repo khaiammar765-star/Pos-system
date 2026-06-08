@@ -100,10 +100,10 @@ public class PayrollService {
     }
 
     public List<PayrollRecord> getAllRecords() {
-        return payrollRecordRepository.findAllByOrderByYearDescMonthDescUserFullNameAsc();
+        return payrollRecordRepository.findAllOrdered();
     }
 
     public List<PayrollRecord> getRecordsByMonth(int year, int month) {
-        return payrollRecordRepository.findByYearAndMonthOrderByUserFullNameAsc(year, month);
+        return payrollRecordRepository.findByYearAndMonth(year, month);
     }
 }
