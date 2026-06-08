@@ -5,7 +5,6 @@ import com.pos.system.model.PayrollRecord;
 import com.pos.system.model.User;
 import com.pos.system.service.PayrollService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -68,11 +67,11 @@ public class PayrollApiController {
     }
 
     @PostMapping("/calculate")
-    public ResponseEntity<PayrollRecord> calculate(@RequestBody Map<String, Integer> body) {
-        return ResponseEntity.ok(payrollService.calculatePayroll(
-            body.get("userId").longValue(),
-            body.get("year"),
-            body.get("month")));
+    public ResponseEntity<PayrollRecord> calculate(@RequestBody Map<String, Object> body) {
+        Long userId = Long.parseLong(body.get("userId").toString());
+        int year = Integer.parseInt(body.get("year").toString());
+        int month = Integer.parseInt(body.get("month").toString());
+        return ResponseEntity.ok(payrollService.calculatePayroll(userId, year, month));
     }
 
     @PatchMapping("/records/{id}/pay")

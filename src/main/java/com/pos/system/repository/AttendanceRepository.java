@@ -13,5 +13,5 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
 
     Optional<Attendance> findByUserIdAndDate(Long userId, LocalDate date);
 
-    int countByUserIdAndDateBetweenAndPresentTrue(Long userId, LocalDate from, LocalDate to);
+    long countByUserIdAndDateBetweenAndPresentTrue(Long userId, LocalDate from, LocalDate to);
 }

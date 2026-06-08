@@ -75,7 +75,7 @@ public class PayrollService {
 
         LocalDate from = LocalDate.of(year, month, 1);
         LocalDate to = from.withDayOfMonth(from.lengthOfMonth());
-        int daysWorked = attendanceRepository.countByUserIdAndDateBetweenAndPresentTrue(userId, from, to);
+        int daysWorked = (int) attendanceRepository.countByUserIdAndDateBetweenAndPresentTrue(userId, from, to);
 
         PayrollRecord record = payrollRecordRepository
             .findByUserIdAndYearAndMonth(userId, year, month)
