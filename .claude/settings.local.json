@@ -29,7 +29,14 @@
       "Bash(./mvnw -q compile)",
       "Bash(echo \"EXIT: $?\")",
       "Bash(ls mvnw*)",
-      "Bash(ls *.cmd)"
+      "Bash(ls *.cmd)",
+      "PowerShell(node -v)",
+      "PowerShell(npm -v)",
+      "PowerShell(python --version)",
+      "PowerShell(npm ls -g docx 2>$null)",
+      "PowerShell($d = \"C:\\\\Users\\\\Cicakkobeng\\\\Desktop\\\\_docx_build\"; if \\(-not \\(Test-Path $d\\)\\) { New-Item -ItemType Directory $d | Out-Null }; Set-Location $d; npm init -y | Out-Null; npm install docx 2>&1 | Select-Object -Last 3)",
+      "PowerShell(Remove-Item -Recurse -Force \"C:\\\\Users\\\\Cicakkobeng\\\\Desktop\\\\_docx_build\"; Write-Output \"Cleaned up. Final file:\"; Get-Item \"C:\\\\Users\\\\Cicakkobeng\\\\Desktop\\\\POS Deployment Guide.docx\" | Select-Object Name, @{N='KB';E={[math]::Round\\($_.Length/1KB,1\\)}}, LastWriteTime)",
+      "Bash(mvnw.cmd compile *)"
     ]
   }
 }

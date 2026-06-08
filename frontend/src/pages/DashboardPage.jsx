@@ -20,6 +20,7 @@ export default function DashboardPage() {
     { icon: 'bi-people-fill', label: 'Users', path: '/users', color: 'dark' },
     { icon: 'bi-bell', label: 'Orders', path: '/orders', color: 'warning' },
     { icon: 'bi-qr-code', label: 'Tables', path: '/tables', color: 'dark' },
+    { icon: 'bi-cash-coin', label: 'Payroll', path: '/payroll', color: 'success' },
   ]
 
   return (

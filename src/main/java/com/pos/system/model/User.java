@@ -50,6 +50,10 @@ public class User {
 
     private LocalDateTime lockedAt;
 
+    // Payroll — gaji harian (RM)
+    @Column(nullable = false)
+    private double dailyRate = 0.0;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;

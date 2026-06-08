@@ -13,6 +13,7 @@ import UsersPage from './pages/UsersPage'
 import MenuPage from './pages/MenuPage'
 import OrdersPage from './pages/OrdersPage'
 import TablesPage from './pages/TablesPage'
+import PayrollPage from './pages/PayrollPage'
 
 export default function App() {
   return (
@@ -35,8 +36,9 @@ export default function App() {
         <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
         <Route path="/tables" element={<ProtectedRoute><TablesPage /></ProtectedRoute>} />
 
-        {/* ── Admin-only route ── */}
+        {/* ── Admin-only routes ── */}
         <Route path="/users" element={<ProtectedRoute adminOnly><UsersPage /></ProtectedRoute>} />
+        <Route path="/payroll" element={<ProtectedRoute adminOnly><PayrollPage /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   )
