@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import api from '../api/axios'
 import TopNav from '../components/TopNav'
 
-const MONTHS = ['Jan','Feb','Mac','Apr','Mei','Jun','Jul','Ogs','Sep','Okt','Nov','Dis']
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 
 export default function PayrollPage() {
   const [tab, setTab] = useState('staff')
@@ -13,14 +13,14 @@ export default function PayrollPage() {
   const [rateModal, setRateModal] = useState(null) // user object
   const [rateInput, setRateInput] = useState('')
 
-  // --- Tab 2: Kehadiran ---
+  // --- Tab 2: Attendance ---
   const [attStaff, setAttStaff] = useState('')
   const [attYear, setAttYear] = useState(new Date().getFullYear())
   const [attMonth, setAttMonth] = useState(new Date().getMonth() + 1)
   const [attendance, setAttendance] = useState([]) // [{date, present}]
   const [attLoading, setAttLoading] = useState(false)
 
-  // --- Tab 3: Bayaran ---
+  // --- Tab 3: Payroll ---
   const [records, setRecords] = useState([])
   const [recLoading, setRecLoading] = useState(false)
   const [calcModal, setCalcModal] = useState(false)
@@ -45,10 +45,10 @@ export default function PayrollPage() {
     e.preventDefault()
     try {
       await api.patch(`/api/payroll/staff/${rateModal.id}/rate`, { dailyRate: parseFloat(rateInput) })
-      showAlert('success', `Kadar gaji ${rateModal.fullName} dikemas kini.`)
+      showAlert('success', `Daily rate for ${rateModal.fullName} updated.`)
       setRateModal(null)
       fetchStaff()
-    } catch (err) { showAlert('danger', 'Gagal simpan.') }
+    } catch (err) { showAlert('danger', 'Failed to save.') }
   }
 
   // ── Tab 2 helpers ──
@@ -68,7 +68,7 @@ export default function PayrollPage() {
     try {
       await api.post('/api/payroll/attendance/toggle', { userId: String(attStaff), date: dateStr })
       fetchAttendance()
-    } catch (err) { showAlert('danger', 'Gagal kemaskini kehadiran.') }
+    } catch (err) { showAlert('danger', 'Failed to update attendance.') }
   }
 
   function getDaysInMonth(year, month) {
@@ -108,19 +108,19 @@ export default function PayrollPage() {
         year: parseInt(calcForm.year),
         month: parseInt(calcForm.month)
       })
-      showAlert('success', 'Gaji berjaya dikira dan disimpan.')
+      showAlert('success', 'Payroll calculated and saved.')
       setCalcModal(false)
       fetchRecords()
-    } catch (err) { showAlert('danger', 'Gagal kira gaji.') }
+    } catch (err) { showAlert('danger', 'Failed to calculate payroll.') }
   }
 
   async function handlePay(id) {
-    if (!confirm('Tandakan sebagai DIBAYAR?')) return
+    if (!confirm('Mark this record as PAID?')) return
     try {
       await api.patch(`/api/payroll/records/${id}/pay`)
-      showAlert('success', 'Rekod dikemas kini — gaji dibayar.')
+      showAlert('success', 'Record updated — salary marked as paid.')
       fetchRecords()
-    } catch (err) { showAlert('danger', 'Gagal kemaskini.') }
+    } catch (err) { showAlert('danger', 'Failed to update.') }
   }
 
   function showAlert(type, message) {
@@ -148,17 +148,17 @@ export default function PayrollPage() {
         <ul className="nav nav-tabs mb-4">
           <li className="nav-item">
             <button className={`nav-link ${tab === 'staff' ? 'active fw-semibold' : ''}`} onClick={() => setTab('staff')}>
-              <i className="bi bi-people me-1"></i>Staff & Kadar Gaji
+              <i className="bi bi-people me-1"></i>Staff & Daily Rate
             </button>
           </li>
           <li className="nav-item">
             <button className={`nav-link ${tab === 'attendance' ? 'active fw-semibold' : ''}`} onClick={() => setTab('attendance')}>
-              <i className="bi bi-calendar-check me-1"></i>Rekod Kehadiran
+              <i className="bi bi-calendar-check me-1"></i>Attendance
             </button>
           </li>
           <li className="nav-item">
             <button className={`nav-link ${tab === 'records' ? 'active fw-semibold' : ''}`} onClick={() => setTab('records')}>
-              <i className="bi bi-cash-stack me-1"></i>Bayaran & History
+              <i className="bi bi-cash-stack me-1"></i>Payroll & History
             </button>
           </li>
         </ul>
@@ -167,23 +167,23 @@ export default function PayrollPage() {
         {tab === 'staff' && (
           <div className="card shadow-sm border-0">
             <div className="card-header bg-dark text-white">
-              <i className="bi bi-people me-2"></i>Senarai Staff & Kadar Gaji Harian
+              <i className="bi bi-people me-2"></i>Staff & Daily Rate List
             </div>
             <div className="card-body p-0">
               <table className="table table-hover mb-0">
                 <thead className="table-secondary">
                   <tr>
                     <th>#</th>
-                    <th>Nama</th>
+                    <th>Name</th>
                     <th>Username</th>
-                    <th>Jawatan</th>
-                    <th>Kadar Gaji Harian</th>
-                    <th>Tindakan</th>
+                    <th>Role</th>
+                    <th>Daily Rate</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {staff.length === 0 ? (
-                    <tr><td colSpan={6} className="text-center text-muted py-4">Tiada staff.</td></tr>
+                    <tr><td colSpan={6} className="text-center text-muted py-4">No staff found.</td></tr>
                   ) : staff.map((u, i) => (
                     <tr key={u.id}>
                       <td>{i + 1}</td>
@@ -194,11 +194,11 @@ export default function PayrollPage() {
                       </td>
                       <td>
                         <span className="fw-semibold text-success">{fmtRM(u.dailyRate)}</span>
-                        <span className="text-muted small ms-1">/ hari</span>
+                        <span className="text-muted small ms-1">/ day</span>
                       </td>
                       <td>
                         <button className="btn btn-sm btn-outline-dark" onClick={() => openRateModal(u)}>
-                          <i className="bi bi-pencil me-1"></i>Set Gaji
+                          <i className="bi bi-pencil me-1"></i>Set Rate
                         </button>
                       </td>
                     </tr>
@@ -209,7 +209,7 @@ export default function PayrollPage() {
           </div>
         )}
 
-        {/* ════════════════════ TAB 2: KEHADIRAN ════════════════════ */}
+        {/* ════════════════════ TAB 2: ATTENDANCE ════════════════════ */}
         {tab === 'attendance' && (
           <div>
             {/* Filter */}
@@ -217,20 +217,20 @@ export default function PayrollPage() {
               <div className="card-body">
                 <div className="row g-3 align-items-end">
                   <div className="col-md-4">
-                    <label className="form-label fw-semibold">Pilih Staff</label>
+                    <label className="form-label fw-semibold">Select Staff</label>
                     <select className="form-select" value={attStaff} onChange={e => setAttStaff(e.target.value)}>
-                      <option value="">-- Pilih Staff --</option>
+                      <option value="">-- Select Staff --</option>
                       {staff.map(u => <option key={u.id} value={u.id}>{u.fullName}</option>)}
                     </select>
                   </div>
                   <div className="col-md-3">
-                    <label className="form-label fw-semibold">Bulan</label>
+                    <label className="form-label fw-semibold">Month</label>
                     <select className="form-select" value={attMonth} onChange={e => setAttMonth(parseInt(e.target.value))}>
                       {MONTHS.map((m, i) => <option key={i} value={i + 1}>{m}</option>)}
                     </select>
                   </div>
                   <div className="col-md-3">
-                    <label className="form-label fw-semibold">Tahun</label>
+                    <label className="form-label fw-semibold">Year</label>
                     <input className="form-control" type="number" value={attYear}
                       onChange={e => setAttYear(parseInt(e.target.value))} />
                   </div>
@@ -241,7 +241,7 @@ export default function PayrollPage() {
             {!attStaff ? (
               <div className="text-center text-muted py-5">
                 <i className="bi bi-person-x fs-1 d-block mb-2"></i>
-                Pilih staff untuk lihat kehadiran.
+                Select a staff member to view attendance.
               </div>
             ) : attLoading ? (
               <div className="text-center py-5"><div className="spinner-border text-secondary"></div></div>
@@ -250,10 +250,10 @@ export default function PayrollPage() {
                 <div className="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                   <span>
                     <i className="bi bi-calendar3 me-2"></i>
-                    Kehadiran {staff.find(u => u.id == attStaff)?.fullName} — {monthName(attMonth)} {attYear}
+                    Attendance — {staff.find(u => u.id == attStaff)?.fullName} — {monthName(attMonth)} {attYear}
                   </span>
                   <span className="badge bg-success fs-6">
-                    {countPresent()} hari hadir
+                    {countPresent()} days present
                   </span>
                 </div>
                 <div className="card-body">
@@ -268,11 +268,11 @@ export default function PayrollPage() {
                           <button
                             className={`btn w-100 btn-${present ? 'success' : recorded ? 'danger' : 'outline-secondary'}`}
                             onClick={() => toggleDay(dateStr)}
-                            title={present ? 'Hadir — klik untuk tukar' : 'Tidak hadir — klik untuk tandakan hadir'}
+                            title={present ? 'Present — click to change' : 'Absent — click to mark present'}
                           >
                             <div className="fw-bold">{day}</div>
                             <div style={{ fontSize: '0.65rem' }}>
-                              {present ? 'Hadir' : recorded ? 'Absent' : '-'}
+                              {present ? 'Present' : recorded ? 'Absent' : '-'}
                             </div>
                           </button>
                         </div>
@@ -281,8 +281,8 @@ export default function PayrollPage() {
                   </div>
                   <p className="text-muted small mt-3 mb-0">
                     <i className="bi bi-info-circle me-1"></i>
-                    Klik pada tarikh untuk togel hadir / tidak hadir.
-                    <span className="ms-3">🟢 Hadir &nbsp; 🔴 Tidak hadir &nbsp; ⬜ Belum direkod</span>
+                    Click a date to toggle present / absent.
+                    <span className="ms-3">🟢 Present &nbsp; 🔴 Absent &nbsp; ⬜ Not recorded</span>
                   </p>
                 </div>
               </div>
@@ -295,13 +295,13 @@ export default function PayrollPage() {
           <div>
             <div className="d-flex justify-content-end mb-3">
               <button className="btn btn-dark" onClick={() => setCalcModal(true)}>
-                <i className="bi bi-calculator me-1"></i>Kira Gaji
+                <i className="bi bi-calculator me-1"></i>Calculate Payroll
               </button>
             </div>
 
             <div className="card shadow-sm border-0">
               <div className="card-header bg-dark text-white">
-                <i className="bi bi-cash-stack me-2"></i>History Pembayaran Gaji
+                <i className="bi bi-cash-stack me-2"></i>Payroll Payment History
               </div>
               <div className="card-body p-0">
                 {recLoading ? (
@@ -311,39 +311,39 @@ export default function PayrollPage() {
                     <thead className="table-secondary">
                       <tr>
                         <th>#</th>
-                        <th>Nama Staff</th>
-                        <th>Bulan</th>
-                        <th>Hari Kerja</th>
-                        <th>Kadar/Hari</th>
-                        <th>Jumlah Gaji</th>
+                        <th>Staff Name</th>
+                        <th>Month</th>
+                        <th>Days Worked</th>
+                        <th>Rate/Day</th>
+                        <th>Total Salary</th>
                         <th>Status</th>
-                        <th>Tarikh Bayar</th>
-                        <th>Tindakan</th>
+                        <th>Paid Date</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
                       {records.length === 0 ? (
                         <tr><td colSpan={9} className="text-center text-muted py-4">
-                          Tiada rekod. Klik "Kira Gaji" untuk mula.
+                          No records yet. Click "Calculate Payroll" to start.
                         </td></tr>
                       ) : records.map((r, i) => (
                         <tr key={r.id}>
                           <td>{i + 1}</td>
                           <td className="fw-semibold">{r.user?.fullName}</td>
                           <td>{monthName(r.month)} {r.year}</td>
-                          <td className="text-center">{r.daysWorked} hari</td>
+                          <td className="text-center">{r.daysWorked} days</td>
                           <td>{fmtRM(r.dailyRate)}</td>
                           <td className="fw-bold text-success">{fmtRM(r.totalAmount)}</td>
                           <td>
                             <span className={`badge bg-${r.paid ? 'success' : 'warning text-dark'}`}>
-                              {r.paid ? 'Dibayar' : 'Belum Bayar'}
+                              {r.paid ? 'Paid' : 'Unpaid'}
                             </span>
                           </td>
                           <td className="small text-muted">{fmtDate(r.paidDate)}</td>
                           <td>
                             {!r.paid && (
                               <button className="btn btn-sm btn-success" onClick={() => handlePay(r.id)}>
-                                <i className="bi bi-check-lg me-1"></i>Bayar
+                                <i className="bi bi-check-lg me-1"></i>Pay
                               </button>
                             )}
                           </td>
@@ -364,23 +364,23 @@ export default function PayrollPage() {
           <div className="modal-dialog modal-sm">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Set Gaji Harian</h5>
+                <h5 className="modal-title">Set Daily Rate</h5>
                 <button className="btn-close" onClick={() => setRateModal(null)} />
               </div>
               <form onSubmit={saveRate}>
                 <div className="modal-body">
                   <p className="text-muted mb-3">Staff: <strong>{rateModal.fullName}</strong></p>
-                  <label className="form-label fw-semibold">Kadar Gaji Harian (RM)</label>
+                  <label className="form-label fw-semibold">Daily Rate (RM)</label>
                   <div className="input-group">
                     <span className="input-group-text">RM</span>
                     <input className="form-control" type="number" min="0" step="0.01"
                       required value={rateInput} onChange={e => setRateInput(e.target.value)} />
-                    <span className="input-group-text">/ hari</span>
+                    <span className="input-group-text">/ day</span>
                   </div>
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" onClick={() => setRateModal(null)}>Batal</button>
-                  <button type="submit" className="btn btn-dark">Simpan</button>
+                  <button type="button" className="btn btn-secondary" onClick={() => setRateModal(null)}>Cancel</button>
+                  <button type="submit" className="btn btn-dark">Save</button>
                 </div>
               </form>
             </div>
@@ -388,48 +388,48 @@ export default function PayrollPage() {
         </div>
       )}
 
-      {/* ── Modal: Kira Gaji ── */}
+      {/* ── Modal: Calculate Payroll ── */}
       {calcModal && (
         <div className="modal show d-block" style={{ background: 'rgba(0,0,0,0.5)' }}>
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title"><i className="bi bi-calculator me-2"></i>Kira Gaji</h5>
+                <h5 className="modal-title"><i className="bi bi-calculator me-2"></i>Calculate Payroll</h5>
                 <button className="btn-close" onClick={() => setCalcModal(false)} />
               </div>
               <form onSubmit={handleCalculate}>
                 <div className="modal-body">
                   <p className="text-muted small mb-3">
-                    Sistem akan kira gaji berdasarkan hari hadir × kadar gaji harian.
-                    Kalau rekod untuk bulan ini dah ada, ia akan dikemas kini.
+                    Salary is calculated as days present × daily rate.
+                    If a record for this month already exists, it will be updated.
                   </p>
                   <div className="mb-3">
                     <label className="form-label fw-semibold">Staff</label>
                     <select className="form-select" required value={calcForm.userId}
                       onChange={e => setCalcForm({ ...calcForm, userId: e.target.value })}>
-                      <option value="">-- Pilih Staff --</option>
-                      {staff.map(u => <option key={u.id} value={u.id}>{u.fullName} ({fmtRM(u.dailyRate)}/hari)</option>)}
+                      <option value="">-- Select Staff --</option>
+                      {staff.map(u => <option key={u.id} value={u.id}>{u.fullName} ({fmtRM(u.dailyRate)}/day)</option>)}
                     </select>
                   </div>
                   <div className="row g-3">
                     <div className="col">
-                      <label className="form-label fw-semibold">Bulan</label>
+                      <label className="form-label fw-semibold">Month</label>
                       <select className="form-select" value={calcForm.month}
                         onChange={e => setCalcForm({ ...calcForm, month: parseInt(e.target.value) })}>
                         {MONTHS.map((m, i) => <option key={i} value={i + 1}>{m}</option>)}
                       </select>
                     </div>
                     <div className="col">
-                      <label className="form-label fw-semibold">Tahun</label>
+                      <label className="form-label fw-semibold">Year</label>
                       <input className="form-control" type="number" value={calcForm.year}
                         onChange={e => setCalcForm({ ...calcForm, year: parseInt(e.target.value) })} />
                     </div>
                   </div>
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" onClick={() => setCalcModal(false)}>Batal</button>
+                  <button type="button" className="btn btn-secondary" onClick={() => setCalcModal(false)}>Cancel</button>
                   <button type="submit" className="btn btn-dark">
-                    <i className="bi bi-calculator me-1"></i>Kira & Simpan
+                    <i className="bi bi-calculator me-1"></i>Calculate & Save
                   </button>
                 </div>
               </form>
