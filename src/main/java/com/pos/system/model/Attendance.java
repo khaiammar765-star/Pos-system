@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "attendances", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"user_id", "date"})
+    @UniqueConstraint(columnNames = {"user_id", "work_date"})
 })
 @Getter
 @Setter
@@ -26,7 +26,8 @@ public class Attendance {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false)
+    // "date" is a reserved SQL keyword — rename the physical column.
+    @Column(name = "work_date", nullable = false)
     private LocalDate date;
 
     @Column(nullable = false)

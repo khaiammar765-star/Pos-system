@@ -24,10 +24,13 @@ public class PayrollRecord {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false)
+    // NOTE: "month" and "year" are reserved SQL keywords in H2 & MySQL,
+    // so the physical columns are renamed. The Java field names stay the
+    // same, so JPQL/derived queries (p.month, p.year) are unaffected.
+    @Column(name = "pay_month", nullable = false)
     private int month;   // 1–12
 
-    @Column(nullable = false)
+    @Column(name = "pay_year", nullable = false)
     private int year;
 
     private int daysWorked;
